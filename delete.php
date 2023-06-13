@@ -1,19 +1,39 @@
 
 <?php  
-		$dbserver = 'localhost';
-        $dbusername = 'Faust';
-        $dbpassword = 'Phu0ng95crA';
-        $dbname = 'faust1';
-
-        $conn = new mysqli($dbserver, $dbusername, $dbpassword, $dbname);
-        if ($conn->connect_error) {
-            die($conn->connect_error);
-        }   
+        session_start();
+		include("connect.php");
+        
 		
-		    $id = $_GET["id"];
-		    $sql = "DELETE FROM dslop WHERE id = '$id'";
-		    $res = $conn->query($sql);		
+		$id = $_GET["id"];
+        $uid = $_SESSION['id'];
+        $sql ="SELECT * From todolist where id = '$id' and usid = '$uid'";
+        $res = $conn->query($sql);
+        $nrows = $res->num_rows;
+
+        if ($uid == $_SESSION['id'] && $nrows == 1) {
+            $sql = "DELETE FROM todolist WHERE id = '$id'";
+		    $res = $conn->query($sql);
+        
+            echo "Xóa thành công." . " ";
+            echo "<a href='index.php'>Nhấn vào đây để về trang chủ</a>";
+        } else {
+            echo "Sai thông tin." . " ";
+            echo "<a href='index.php'>Nhấn vào đây để về trang chủ</a>";
+        }
+		
 
 		$conn->close();
-		header("Location: index.php");
 ?>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DELETE</title>
+</head>
+<body>
+    
+</body>
+</html>
+

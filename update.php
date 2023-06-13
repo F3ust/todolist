@@ -1,70 +1,87 @@
 <?php
-    $dbserver = 'localhost';
-    $dbusername = 'Faust';
-    $dbpassword = 'Phu0ng95crA';
-    $dbname = 'faust1';
+    session_start();
+    include("connect.php");
 
-    $connect = new mysqli($dbserver, $dbusername, $dbpassword, $dbname);
-    if ($connect->connect_error) {
-        die($connect->connect_error);
+    
+    if (isset($_GET['id1'])) {
+        $id1 = $_GET['id1'];
+        $sql = "SELECT * FROM todolist where id = '$id1'";
+        $res = $connect->query($sql);
+        $nm = '';
+        $id = '';
+        $ab = '';
+        while($row = $res->fetch_assoc()) {
+            $nm = $row["nm"];
+            $id = $row["id"];
+            $ab = $row['ab'];
+        }    
     }
-
-    $id = $_GET['id'];
-
-    $sql = "SELECT * FROM dslop where id = '$id'";
-    $res = $connect->query($sql);
-    $row = $res->fetch_assoc();
-
-    $ns = $row["ns"];
-    $lp = $row["lp"];
-    $ht = $row["ht"];
-    $id = $row["id"];
-    $ab = $row['ab'];
+    
 ?>
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa thông tin</title>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+      tinymce.init({
+        selector: '#tinymce'
+      });
+    </script>
 </head>
 <body>
-<form action="#" method="post">
-        <input type="text" hidden name="id" value="<?php echo $id ?>">
-        Họ và tên: <br> <input type="text" name="ht" value="<?php echo $ht ?>">
-        <br>
-        Ngày tháng năm sinh: <br> <input type="text" name="ns" value="<?php echo $ns ?>">
-        <br>
-        Lớp: <br> <input type="text" name="lp" value="<?php echo $lp ?>">
-        <br>
-        Giới thiệu: <br>
-        <textarea name="ab" id="ab" cols="100" rows="20"><?php echo $ab ?></textarea>
-        <br>
-        <input type="submit" name="dk" value="Thay đổi">
-    </form>
+
+
+<?php
+    
+    if (isset($_GET['id1'])) {
+        $uid = $_SESSION['id'];
+        $sql ="SELECT * From todolist where id = '$id' and usid = '$uid'";
+        $res = $connect->query($sql);
+        $nrows = $res->num_rows;
+        if ($nrows == 1) {
+
+?>
+
+    <form action="#" method="post">
+            <input type="text" hidden name="id" value="<?php echo $id ?>">  
+            Tiêu đề: <br> <input type="text" name="nm" size="100" value="<?php echo $nm ?>">
+            <br>
+            <br>
+            Nội dung: <br>
+            <textarea name="ab" id="tinymce"><?php echo $ab ?></textarea>
+            <br>
+            <input type="submit" name="dk" value="Thay đổi">
+        </form>
+<?php
+        }
+    } else if (isset($_GET['ok'])) {
+        echo "Cập nhật thành công." . " ";
+        echo "<a href='index.php'>Nhấn vào đây để về trang chủ</a>";
+    } else {
+        echo "Sai thông tin." . " ";
+        echo "<a href='index.php'>Nhấn vào đây để về trang chủ</a>";
+    }
+?>
+
 
 <?php
     if (isset($_POST['dk'])) {
-        $ns = $_POST["ns"];
-		$lp = $_POST["lp"];
-		$fn = $_POST["ht"];
+        $nm = $_POST["nm"];
         $ab = $_POST["ab"];
-        $dbserver = 'localhost';
-        $dbusername = 'Faust';
-        $dbpassword = 'Phu0ng95crA';
-        $dbname = 'faust1';
-        $connect = new mysqli($dbserver, $dbusername, $dbpassword, $dbname);
-        if ($connect->connect_error) {
-            die($connect->connect_error);
-        }
-        $sql = "UPDATE dslop SET ht = '$ht', lp='$lp', ns = '$ns', ab= '$ab' where id = '$id'";
+        include("connect.php");
+        $sql = "UPDATE todolist SET nm = '$nm', ab= '$ab' where id = '$id'";
 
         $res = $connect->query($sql);
-		
-        $connect->close();
-	    header("Location: index.php");
+
+        header("Location: update.php?ok=1");
+        
     }
+    $connect->close();
 ?>
 </body>
 </html>
