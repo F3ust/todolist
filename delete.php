@@ -1,18 +1,19 @@
 
 <?php  
         session_start();
-		include("connect.php");
+	include("connect.php");
         
 		
-		$id = $_GET["id"];
+	$id = $_GET["id"];
         $uid = $_SESSION['id'];
         $sql ="SELECT * From todolist where id = '$id' and usid = '$uid'";
-        $res = $conn->query($sql);
+        //$sql ="SELECT * From todolist where id = '$id'";
+        $res = $connect->query($sql);
         $nrows = $res->num_rows;
 
         if ($uid == $_SESSION['id'] && $nrows == 1) {
             $sql = "DELETE FROM todolist WHERE id = '$id'";
-		    $res = $conn->query($sql);
+		    $res = $connect->query($sql);
         
             echo "Xóa thành công." . " ";
             echo "<a href='index.php'>Nhấn vào đây để về trang chủ</a>";
@@ -22,7 +23,7 @@
         }
 		
 
-		$conn->close();
+	$connect->close();
 ?>
 
 <html lang="en">
