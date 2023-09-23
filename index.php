@@ -19,6 +19,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODOLIST</title>
     <style>
+        html, body {
+            height: 100%;
+            margin: 0 0 0 0;
+        }
         table {
             width: 100%;
         }
@@ -30,27 +34,68 @@
             text-decoration: none;
             color: black;
         }
+         .footer {
+            background-color:#ccc;
+            text-align:center;
+            //padding:25px;
+            font-size:18px;
+            position: absolute;
+            width : 100%;
+            bottom: 0;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            //padding-left: 25px;
+        }
+        header {
+            background-color:#ccc;
+            //text-align:center;
+            //padding:25px;
+            padding-top: 25px;
+            padding-bottom: 25px;
+            //padding-left: 25px;
+            font-size:18px;
+            //position: absolute;
+            width : 100%;
+            top: 0;
+        }
+        .login {
+            text-align: right;
+        }
+        .lg {
+            right = 0;
+            //padding:25px;
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">
-        <a href="index.php">TODOLIST</a>
-    </h1>
-    <table style="margin-bottom: 50px; border: none !important;">
-        <tr>
-            <td style="text-align: right;">
+    <header>
+         <div class = "tt">
+            <h3>Faust no TODOLIST</h3>
+        </div>
+        <div class = "login">
 <?php
     if (!isset($_SESSION['tk'])) {
 ?>
-                <a href="login.php">Đăng nhập</a>/ <a href="signup.php">Đăng ký</a>
+            <button class = "lg"><a class="nut" href="login.php">Đăng nhập</a></button>
+            <button class = "lg"><a class="nut" href="signup.php">Đăng ký</a></button>
 <?php
     } else {      
 ?>
               <?php echo $_SESSION['ht']; ?> 
-              <a href="logout.php">Đăng xuất</a>
+              <button class = "lg"><a class="nut" href="logout.php">Đăng xuất</a></button>
 <?php
     }
 ?>
+        </div>
+
+    </header>
+    <h2 style="text-align: center;">
+        <a href="index.php">TODOLIST</a>
+    </h2>
+    <table style="margin-bottom: 50px; border: none !important;">
+        <tr>
+            <td style="text-align: right;">
+
             </td>
         </tr>
     </table>
@@ -116,6 +161,11 @@
 ?>
 
     </table>
+    <footer>
+        <div class = "footer">
+            Mini project by Faust >.<
+        </div>
+    </footer>
 <?php 
     $connect->close();
 ?>
